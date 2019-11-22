@@ -11,9 +11,10 @@ using EventFlowExample.Aggregates.CommandHandlers;
 using EventFlowExample.Aggregates.Commands;
 using EventFlowExample.Aggregates.Events;
 using EventFlowExample.Aggregates.Snapshots;
-using FluentAssertions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -35,6 +36,8 @@ namespace EventFlowExample
 
         public async Task PublishCommandAsync()
         {
+            int magicNumber = 2;
+
             using (var resolver = EventFlowOptions.New
                                                   .UseAutofacContainerBuilder(new ContainerBuilder())
                                                   //.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
@@ -46,24 +49,29 @@ namespace EventFlowExample
                                                   .AddSnapshots(typeof(ExampleSnaphost))
                                                   .UseInMemorySnapshotStore()
                                                   .RegisterServices(sr => sr.Register(i => SnapshotEveryFewVersionsStrategy.Default))
-                                                  //.UseNullLog()
+                                                  .UseNullLog()
                                                   //.UseInMemoryReadStoreFor<ExampleReadModel>()
                                                   //.AddAsynchronousSubscriber<ExampleAggregate, ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
                                                   //.AddSubscribers(new Type[] { typeof(ExampleSyncSubscriber) })
                                                   .CreateResolver())
             {
-                Int32 magicNumber = 2;
+                IList<Task> taskList = new List<Task>();
+
                 CommandBus = resolver.Resolve<ICommandBus>();
 
-                var clock = new Stopwatch();
-                clock.Start();
-
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 5000; i++)
                 {
+                    WizloId streamName = GetStreamName("Protel", "EXAMPLE");
 
-                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(GetStreamName("Protel", "EXAMPLE"), magicNumber), CancellationToken.None)
-                                                              .ConfigureAwait(false);
-
+                    taskList.Add(
+                        Task.Run(
+                           async () => {
+                               for (int j = 0; j < 1; j++)
+                               {
+                                   await CommandBus.PublishAsync(new ExampleCommand(streamName, magicNumber), CancellationToken.None).ConfigureAwait(false);
+                               }
+                           }
+                            ));
                     #region Comments
                     //result.IsSuccess.Should().BeTrue();
 
@@ -85,6 +93,14 @@ namespace EventFlowExample
                     //exampleReadModel.MagicNumber.Should().Be(42);
                     #endregion
                 }
+
+                var clock = new Stopwatch();
+
+                Task[] taskArray = taskList.ToArray();
+
+                clock.Start();
+
+                Task.WaitAll(taskArray);
 
                 clock.Stop();
 
