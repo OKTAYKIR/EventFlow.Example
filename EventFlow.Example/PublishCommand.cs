@@ -4,14 +4,13 @@ using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Autofac.Extensions;
 using EventFlow.EventStores;
 using EventFlow.Extensions;
-using EventFlow.RabbitMQ;
-using EventFlow.RabbitMQ.Extensions;
+using EventFlow.MongoDB.Extensions;
 using EventFlow.Snapshots.Strategies;
 using EventFlowExample.Aggregates.CommandHandlers;
 using EventFlowExample.Aggregates.Commands;
 using EventFlowExample.Aggregates.Events;
 using EventFlowExample.Aggregates.Snapshots;
-using FluentAssertions;
+using MongoDB.Driver;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -23,6 +22,7 @@ namespace EventFlowExample
     {
         #region Variables
         ICommandBus CommandBus { get; set; }
+        private const string SNAPSHOT_CONTAINER_NAME = "snapshots";
         //IRootResolver resolver { get; set; }
         #endregion
 
@@ -35,17 +35,20 @@ namespace EventFlowExample
 
         public async Task PublishCommandAsync()
         {
+            var client = new MongoClient("mongodb://localhost:27017");
+
             using (var resolver = EventFlowOptions.New
                                                   .UseAutofacContainerBuilder(new ContainerBuilder())
-                                                  //.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
-                                                  .PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
                                                   .AddEvents(typeof(ExampleEvent))
                                                   .AddCommands(typeof(ExampleCommand))
                                                   .AddCommandHandlers(typeof(ExampleCommandHandler))
                                                   .ConfigureEventStore()
+                                                  .ConfigureMongoDb(client, SNAPSHOT_CONTAINER_NAME)
                                                   .AddSnapshots(typeof(ExampleSnaphost))
-                                                  .UseInMemorySnapshotStore()
+                                                  .UseMongoDbSnapshotStore()
                                                   .RegisterServices(sr => sr.Register(i => SnapshotEveryFewVersionsStrategy.Default))
+                                                  //.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
+                                                  //.PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
                                                   //.UseNullLog()
                                                   //.UseInMemoryReadStoreFor<ExampleReadModel>()
                                                   //.AddAsynchronousSubscriber<ExampleAggregate, ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
@@ -58,10 +61,11 @@ namespace EventFlowExample
                 var clock = new Stopwatch();
                 clock.Start();
 
-                for (int i = 0; i < 10; i++)
-                {
+                WizloId wizloId = GetStreamName("Protel", "EXAMPLE");
 
-                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(GetStreamName("Protel", "EXAMPLE"), magicNumber), CancellationToken.None)
+                for (int i = 0; i < 501; i++)
+                {
+                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(wizloId, magicNumber), CancellationToken.None)
                                                               .ConfigureAwait(false);
 
                     #region Comments

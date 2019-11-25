@@ -36,6 +36,7 @@ namespace EventFlowExample.Aggregates
                                    _counter,
                                    Enumerable.Empty<ExampleSnapshotVersion>()));
         }
+
         protected override Task LoadSnapshotAsync(ExampleSnaphost snapshot, ISnapshotMetadata metadata, CancellationToken cancellationToken)
         {
             _magicNumber = snapshot.MagicNumber;
