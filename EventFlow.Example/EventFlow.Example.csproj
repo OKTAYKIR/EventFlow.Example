@@ -20,6 +20,7 @@
     </PackageReference>
     <PackageReference Include="EventFlow" Version="0.77.4023" />
     <PackageReference Include="EventFlow.Autofac" Version="0.77.4023" />
+    <PackageReference Include="EventFlow.MongoDB" Version="0.76.4014" />
     <PackageReference Include="EventFlow.RabbitMQ" Version="0.77.4023" />
     <PackageReference Include="EventStore.Client" Version="5.0.5" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
