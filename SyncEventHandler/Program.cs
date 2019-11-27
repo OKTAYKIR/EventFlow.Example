@@ -97,7 +97,7 @@ namespace SyncEventHandler
 
     }
 
-    public class RabbitMqConsumePersistanceService : IHostedService, IRabbitMqConsumerPersistanceService, ISubscribeAsynchronousTo<ExampleAggregate, ExampleId, ExampleEvent>
+    public class RabbitMqConsumePersistanceService : IHostedService, IRabbitMqConsumerPersistanceService, ISubscribeAsynchronousTo<ExampleAggregate, WizloId, ExampleEvent>
     {
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -110,7 +110,7 @@ namespace SyncEventHandler
             return Task.CompletedTask;
         }
 
-        public Task HandleAsync(IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
+        public Task HandleAsync(IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
         {
 
             Console.WriteLine($"Example Updated for {domainEvent.AggregateIdentity} with MagicNumber => {domainEvent.AggregateEvent.MagicNumber}");
@@ -143,7 +143,7 @@ namespace SyncEventHandler
                        EventFlowOptions.New
                            .Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
                             .PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 5, "eventflow"))
-                            .AddAsynchronousSubscriber<ExampleAggregate, ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
+                            .AddAsynchronousSubscriber<ExampleAggregate, WizloId, ExampleEvent, RabbitMqConsumePersistanceService>()
                             .RegisterServices(s =>
                             {
                                 s.Register<IHostedService, RabbitConsumePersistenceService>(Lifetime.Singleton);
