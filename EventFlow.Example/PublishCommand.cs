@@ -2,14 +2,24 @@
 using EventFlow;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Autofac.Extensions;
+using EventFlow.Configuration;
 using EventFlow.EventStores;
 using EventFlow.Extensions;
 using EventFlow.MongoDB.Extensions;
+using EventFlow.PostgreSql;
+using EventFlow.PostgreSql.Connections;
+using EventFlow.PostgreSql.EventStores;
+using EventFlow.PostgreSql.Extensions;
+using EventFlow.Queries;
+using EventFlow.RabbitMQ;
+using EventFlow.RabbitMQ.Extensions;
 using EventFlow.Snapshots.Strategies;
 using EventFlowExample.Aggregates.CommandHandlers;
 using EventFlowExample.Aggregates.Commands;
 using EventFlowExample.Aggregates.Events;
+using EventFlowExample.Aggregates.ReadModels;
 using EventFlowExample.Aggregates.Snapshots;
+using FluentAssertions;
 using MongoDB.Driver;
 using System;
 using System.Diagnostics;
@@ -33,12 +43,18 @@ namespace EventFlowExample
         private static WizloId GetStreamName(string tenantName, string eventName, Guid? aggregateId = null) =>
             new WizloId($"{tenantName.ToLowerInvariant()}_{eventName.ToLowerInvariant()}-{(aggregateId.HasValue ? aggregateId.ToString() : Guid.NewGuid().ToString())}");
 
+        void DecorateCommandBus(IServiceRegistration sr)
+        {
+            sr.Decorate<ICommandBus>((r, cb) => new LogCommandBus(cb));
+        }
+
         public async Task PublishCommandAsync()
         {
             var client = new MongoClient("mongodb://localhost:27017");
 
             using (var resolver = EventFlowOptions.New
-                                                  .UseAutofacContainerBuilder(new ContainerBuilder())
+                                                  .UseAutofacContainerBuilder(new ContainerBuilder()) // Must be the first line!
+                                                  .Configure(c => c.ThrowSubscriberExceptions = false)
                                                   .AddEvents(typeof(ExampleEvent))
                                                   .AddCommands(typeof(ExampleCommand))
                                                   .AddCommandHandlers(typeof(ExampleCommandHandler))
@@ -47,7 +63,7 @@ namespace EventFlowExample
                                                   .AddSnapshots(typeof(ExampleSnaphost))
                                                   .UseMongoDbSnapshotStore()
                                                   .RegisterServices(sr => sr.Register(i => SnapshotEveryFewVersionsStrategy.Default))
-                                                  //.Configure(cfg => cfg.IsAsynchronousSubscribersEnabled = true)
+                                                  .RegisterServices(DecorateCommandBus)
                                                   //.PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
                                                   //.UseNullLog()
                                                   //.UseInMemoryReadStoreFor<ExampleReadModel>()
@@ -55,6 +71,7 @@ namespace EventFlowExample
                                                   //.AddSubscribers(new Type[] { typeof(ExampleSyncSubscriber) })
                                                   .CreateResolver())
             {
+
                 Int32 magicNumber = 2;
                 CommandBus = resolver.Resolve<ICommandBus>();
 
@@ -63,11 +80,10 @@ namespace EventFlowExample
 
                 WizloId wizloId = GetStreamName("Protel", "EXAMPLE");
 
-                for (int i = 0; i < 501; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(wizloId, magicNumber), CancellationToken.None)
                                                               .ConfigureAwait(false);
-
                     #region Comments
                     //result.IsSuccess.Should().BeTrue();
 

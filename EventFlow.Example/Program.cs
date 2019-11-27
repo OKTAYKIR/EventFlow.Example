@@ -1,6 +1,4 @@
-﻿using static EventFlowExample.Tests.ExampleTests;
-
-namespace EventFlowExample
+﻿namespace EventFlowExample
 {
     class Program
     {

@@ -24,13 +24,14 @@
 
 using EventFlow.Aggregates;
 using EventFlow.EventStores;
+using SyncEventHandler;
 
 namespace EventFlow.Documentation.GettingStarted
 {
     /// A basic event containing some information
     [EventVersion("example", 1)]
     public class ExampleEvent :
-        AggregateEvent<ExampleAggregate, ExampleId>
+        AggregateEvent<ExampleAggregate, WizloId>
     {
         public ExampleEvent(int magicNumber)
         {
