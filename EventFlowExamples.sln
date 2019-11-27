@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29409.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Example", "EventFlow.Example\EventFlow.Example.csproj", "{F67006E8-2887-4B2C-8049-63BDC8AE0F00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventFlow.Example", "EventFlow.Example\EventFlow.Example.csproj", "{F67006E8-2887-4B2C-8049-63BDC8AE0F00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore", "EventStore\EventStore.csproj", "{DF87F930-BF1C-4932-9C51-75591E14FEAE}"
 EndProject

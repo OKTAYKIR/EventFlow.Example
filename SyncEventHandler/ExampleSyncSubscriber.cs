@@ -27,12 +27,13 @@ using System.Threading.Tasks;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Subscribers;
+using SyncEventHandler;
 
 namespace EventFlow.Documentation.GettingStarted
 {
-    public class ExampleSyncSubscriber : ISubscribeSynchronousTo<ExampleAggregate, ExampleId, ExampleEvent>
+    public class ExampleSyncSubscriber : ISubscribeSynchronousTo<ExampleAggregate, WizloId, ExampleEvent>
     {
-        public Task HandleAsync(IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
+        public Task HandleAsync(IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
         {
             return Task.Run(() =>
             { 

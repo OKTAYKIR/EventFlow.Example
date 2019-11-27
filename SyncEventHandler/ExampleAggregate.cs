@@ -23,17 +23,18 @@
 
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
+using SyncEventHandler;
 
 namespace EventFlow.Documentation.GettingStarted
 {
     /// The aggregate root
     public class ExampleAggregate :
-        AggregateRoot<ExampleAggregate, ExampleId>,
+        AggregateRoot<ExampleAggregate, WizloId>,
         IEmit<ExampleEvent> //optional
     {
         private int? _magicNumber;
 
-        public ExampleAggregate(ExampleId id) : base(id) {
+        public ExampleAggregate(WizloId id) : base(id) {
         //    SetSourceIdHistory(int.MaxValue); //optional;
         }
 

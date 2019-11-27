@@ -14,10 +14,10 @@ namespace EventFlowExample.Aggregates.Events
     }
 
     // Represents the aggregate identity(ID)
-    [Obsolete]
-    public class ExampleId :
-        Identity<ExampleId>
-    {
-        public ExampleId(string value) : base(value) { }
-    }
+    //[Obsolete]
+    //public class WizloId :
+    //    Identity<WizloId>
+    //{
+    //    public WizloId(string value) : base(value) { }
+    //}
 }
