@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace EventFlowExample.Aggregates.ReadModels
 {
-    /// Read model for our aggregate
     public class ExampleReadModel :
         IReadModel,
         IAmReadModelFor<ExampleAggregate, WizloId, ExampleEvent>
