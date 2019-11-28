@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 namespace EventFlowExample.Aggregates
 {
     public class ExampleAggregate : SnapshotAggregateRoot<ExampleAggregate, WizloId, ExampleSnaphost>,
-                                   //AggregateRoot<ExampleAggregate, ExampleId>,
                                     IEmit<ExampleEvent> //optional
     {
         #region Aggregate Variables

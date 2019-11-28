@@ -6,13 +6,10 @@ using EventFlow.Configuration;
 using EventFlow.EventStores;
 using EventFlow.Extensions;
 using EventFlow.MongoDB.Extensions;
-using EventFlow.RabbitMQ;
-using EventFlow.RabbitMQ.Extensions;
 using EventFlow.Snapshots.Strategies;
 using EventFlowExample.Aggregates.CommandHandlers;
 using EventFlowExample.Aggregates.Commands;
 using EventFlowExample.Aggregates.Events;
-using EventFlowExample.Aggregates.Sagas;
 using EventFlowExample.Aggregates.Snapshots;
 using MongoDB.Driver;
 using System;
@@ -61,8 +58,8 @@ namespace EventFlowExample
                                                   .UseMongoDbSnapshotStore()
                                                   .RegisterServices(sr => sr.Register(i => SnapshotEveryFewVersionsStrategy.Default))
                                                   .RegisterServices(DecorateCommandBus)
-                                                  .PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
-                                                  .ConfigureSagas()
+                                                  //.PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
+                                                  //.ConfigureSagas()
                                                   //.UseNullLog()
                                                   //.UseInMemoryReadStoreFor<Aggregates.ReadModels.ExampleReadModel>()
                                                   //.AddAsynchronousSubscriber<ExampleAggregate, ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
@@ -75,9 +72,10 @@ namespace EventFlowExample
                 var clock = new Stopwatch();
                 clock.Start();
 
+                WizloId wizloId = GetStreamName("Protel", "EXAMPLE");
+
                 for (int i = 0; i < 1; i++)
                 {
-                    WizloId wizloId = GetStreamName("Protel", "EXAMPLE");
 
                     IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(wizloId, magicNumber), CancellationToken.None)
                                                               .ConfigureAwait(false);
