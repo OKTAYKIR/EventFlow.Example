@@ -56,6 +56,13 @@ namespace EventFlowExample.Aggregates
             return ExecutionResult.Success();
         }
 
+        public IExecutionResult ResetMagicNumber()
+        {
+            Emit(new ResetEvent());
+
+            return ExecutionResult.Success();
+        }
+
         // We apply the event as part of the event sourcing system. EventFlow
         // provides several different methods for doing this, e.g. state objects,
         // the Apply method is merely the simplest
@@ -64,6 +71,13 @@ namespace EventFlowExample.Aggregates
             _magicNumber = aggregateEvent.MagicNumber;
 
             _counter += _magicNumber.Value;
+        }
+
+        public void Apply(ResetEvent aggregateEvent)
+        {
+            _magicNumber = 0;
+
+            _counter = 0;
         }
     }
 }

@@ -1,5 +1,4 @@
 using EventFlow.Core;
-using System;
 
 namespace EventFlowExample.Aggregates.Events
 {

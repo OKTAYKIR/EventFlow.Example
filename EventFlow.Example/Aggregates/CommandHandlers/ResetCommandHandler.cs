@@ -7,15 +7,14 @@ using EventFlowExample.Aggregates.Events;
 
 namespace EventFlowExample.Aggregates.CommandHandlers
 {
-    public class ExampleCommandHandler :
-        CommandHandler<ExampleAggregate, WizloId, IExecutionResult, ExampleCommand>
+    public class ResetCommandHandler : CommandHandler<ExampleAggregate, WizloId, IExecutionResult, ResetCommand>
     {
         public override Task<IExecutionResult> ExecuteCommandAsync(
             ExampleAggregate aggregate,
-            ExampleCommand command,
+            ResetCommand command,
             CancellationToken cancellationToken)
         {
-            var executionResult = aggregate.SetMagicNumer(command.MagicNumber);
+            var executionResult = aggregate.ResetMagicNumber();
 
             return Task.FromResult(executionResult);
         }

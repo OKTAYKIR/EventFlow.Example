@@ -4,7 +4,6 @@ using EventFlowExample.Aggregates.Events;
 
 namespace EventFlowExample.Aggregates.Commands
 {
-    /// Command for update magic number
     public class ExampleCommand : Command<ExampleAggregate, WizloId, IExecutionResult>
     {
         public ExampleCommand(
