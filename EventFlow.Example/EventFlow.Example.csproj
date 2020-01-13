@@ -18,14 +18,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="EventFlow" Version="0.77.4023" />
+    <PackageReference Include="EventFlow" Version="0.77.4077" />
     <PackageReference Include="EventFlow.Autofac" Version="0.77.4023" />
     <PackageReference Include="EventFlow.MongoDB" Version="0.76.4014" />
     <PackageReference Include="EventFlow.RabbitMQ" Version="0.77.4023" />
     <PackageReference Include="EventStore.Client" Version="5.0.5" />
     <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
-    <PackageReference Include="pUnit" Version="1.0.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
   </ItemGroup>
 

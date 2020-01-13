@@ -6,10 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EventFlow" Version="0.77.4023" />
+    <PackageReference Include="EventFlow" Version="0.77.4077" />
     <PackageReference Include="EventFlow.RabbitMQ" Version="0.77.4023" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EventFlow.Example\EventFlow.Example.csproj" />
   </ItemGroup>
 
 </Project>

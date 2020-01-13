@@ -27,6 +27,8 @@ using System.Threading.Tasks;
 using EventFlow.Aggregates;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Subscribers;
+using EventFlowExample.Aggregates;
+using EventFlowExample.Aggregates.Events;
 using SyncEventHandler;
 
 namespace EventFlow.Documentation.GettingStarted

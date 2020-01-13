@@ -4,6 +4,7 @@ services:
   
   rabbitmq:
     image: "rabbitmq:3-management"
+    container_name: rabbitmq
     environment:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
       RABBITMQ_DEFAULT_USER: "test"
@@ -17,6 +18,7 @@ services:
       
   eventstore:
     image: eventstore/eventstore:release-5.0.1
+    container_name: eventstore
     ports:
       - 2113:2113
       - 1113:1113
@@ -29,3 +31,21 @@ services:
       - EVENTSTORE_RUN_PROJECTIONS=all
       - EVENTSTORE_START_STANDARD_PROJECTIONS=TRUE
       
+  snapshot_store:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+      
+  readstore:
+    image: postgres:10.6-alpine
+    container_name: readstore
+    environment:
+      - POSTGRES_DB=testdb
+      - POSTGRES_USER=dbadmin
+      - POSTGRES_PASSWORD=dbadmin
+    command:
+      - -c
+      - max_prepared_transactions=100
+    ports:
+      - "5433:5432"
+

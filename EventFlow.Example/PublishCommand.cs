@@ -6,11 +6,14 @@ using EventFlow.Configuration;
 using EventFlow.EventStores;
 using EventFlow.Extensions;
 using EventFlow.MongoDB.Extensions;
+using EventFlow.RabbitMQ;
+using EventFlow.RabbitMQ.Extensions;
 using EventFlow.Snapshots.Strategies;
 using EventFlowExample.Aggregates.CommandHandlers;
 using EventFlowExample.Aggregates.Commands;
 using EventFlowExample.Aggregates.Events;
 using EventFlowExample.Aggregates.Snapshots;
+using EventFlowExample.Jobs;
 using MongoDB.Driver;
 using System;
 using System.Diagnostics;
@@ -45,7 +48,7 @@ namespace EventFlowExample
 
             using (var resolver = EventFlowOptions.New
                                                   .UseAutofacContainerBuilder(new ContainerBuilder()) // Must be the first line!
-                                                  .Configure(c => c.ThrowSubscriberExceptions = false)
+                                                  .Configure(c => c.ThrowSubscriberExceptions = true)
                                                   .AddEvents(typeof(ExampleEvent))
                                                   .AddEvents(typeof(ResetEvent))
                                                   .AddCommands(typeof(ExampleCommand))
@@ -58,12 +61,19 @@ namespace EventFlowExample
                                                   .UseMongoDbSnapshotStore()
                                                   .RegisterServices(sr => sr.Register(i => SnapshotEveryFewVersionsStrategy.Default))
                                                   .RegisterServices(DecorateCommandBus)
-                                                  //.PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
+                                                  .PublishToRabbitMq(RabbitMqConfiguration.With(new Uri(@"amqp://test:test@localhost:5672"), true, 4, "eventflow"))
                                                   //.ConfigureSagas()
                                                   //.UseNullLog()
                                                   //.UseInMemoryReadStoreFor<Aggregates.ReadModels.ExampleReadModel>()
-                                                  //.AddAsynchronousSubscriber<ExampleAggregate, ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
+                                                  .Configure(c => c.IsAsynchronousSubscribersEnabled = true)
+                                                  //.AddAsynchronousSubscriber<ExampleAggregate, Aggregates.Events.WizloId, ExampleEvent, RabbitMqConsumePersistanceService>()
+                                                  //.RegisterServices(s => {
+                                                  //    s.Register<IHostedService, RabbitConsumePersistenceService>(Lifetime.Singleton);
+                                                  //    s.Register<IHostedService, RabbitMqConsumePersistanceService>(Lifetime.Singleton);
+                                                  //})
                                                   //.AddSubscribers(new Type[] { typeof(ExampleSyncSubscriber) })
+                                                 // .UseHangfireJobScheduler()
+                                                  .AddJobs(typeof(ExampleJob))
                                                   .CreateResolver())
             {
                 Int32 magicNumber = 2;
@@ -132,7 +142,12 @@ namespace EventFlowExample
 
         //}
 
-        //public class RabbitMqConsumePersistanceService : ISubscribeAsynchronousTo<ExampleAggregate, ExampleId, ExampleEvent>
+        //public interface IRabbitMqConsumerPersistanceService
+        //{
+
+        //}
+
+        //public class RabbitMqConsumePersistanceService : IRabbitMqConsumerPersistanceService, ISubscribeAsynchronousTo<ExampleAggregate, WizloId, ExampleEvent>
         //{
 
         //    public Task StartAsync(CancellationToken cancellationToken)
@@ -145,7 +160,7 @@ namespace EventFlowExample
         //        return Task.CompletedTask;
         //    }
 
-        //    public Task HandleAsync(IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
+        //    public Task HandleAsync(IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
         //    {
         //        for (int i = 0; i < 1000; i++)
         //        {
