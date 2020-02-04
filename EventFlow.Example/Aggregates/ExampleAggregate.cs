@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EventFlowExample.Aggregates
 {
-    public class ExampleAggregate : SnapshotAggregateRoot<ExampleAggregate, WizloId, ExampleSnaphost>,
+    public class ExampleAggregate : SnapshotAggregateRoot<ExampleAggregate, ExampleId, ExampleSnaphost>,
                                     IEmit<ExampleEvent> //optional
     {
         #region Aggregate Variables
@@ -19,7 +19,7 @@ namespace EventFlowExample.Aggregates
         private int _counter = 0;
         #endregion
 
-        public ExampleAggregate(WizloId id) : base(id, SnapshotEveryFewVersionsStrategy.With(SnapshotEveryVersion)) 
+        public ExampleAggregate(ExampleId id) : base(id, SnapshotEveryFewVersionsStrategy.With(SnapshotEveryVersion)) 
         {
         //    SetSourceIdHistory(int.MaxValue); //optional;
         }

@@ -7,9 +7,9 @@ using EventFlowExample.Aggregates.Events;
 
 namespace EventFlowExample.Aggregates.Subscribers
 {
-    public class ExampleSyncSubscriber : ISubscribeSynchronousTo<ExampleAggregate, WizloId, ExampleEvent>
+    public class ExampleSyncSubscriber : ISubscribeSynchronousTo<ExampleAggregate, ExampleId, ExampleEvent>
     {
-        public Task HandleAsync(IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
+        public Task HandleAsync(IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
         {
             return Task.Run(() =>
             { 

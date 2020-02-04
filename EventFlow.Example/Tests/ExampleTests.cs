@@ -22,9 +22,9 @@ namespace EventFlowExample.Tests
         [RPlotExporter]
         public class CommandPublish
         {
-            readonly ICommandBus commandBus;
-            readonly WizloId wizloId;
-            readonly int magicNumber;
+            private readonly ICommandBus commandBus;
+            private readonly ExampleId exampleId;
+            private readonly int magicNumber;
 
             public CommandPublish()
             { 
@@ -34,7 +34,7 @@ namespace EventFlowExample.Tests
             public async Task<IExecutionResult> PublishCommand()
             {
                 return await commandBus.PublishAsync(
-                          new ExampleCommand(wizloId, magicNumber),
+                          new ExampleCommand(exampleId, magicNumber),
                           CancellationToken.None)
                           .ConfigureAwait(false);
             }
@@ -55,7 +55,7 @@ namespace EventFlowExample.Tests
                                                       .CreateResolver())
                 {
                     // Create a new identity for our aggregate root
-                    var exampleId = new WizloId(Guid.NewGuid().ToString());
+                    var exampleId = new ExampleId(Guid.NewGuid().ToString());
                      // Resolve the command bus and use it to publish a command
                     CommandBus = resolver.Resolve<ICommandBus>();
                 

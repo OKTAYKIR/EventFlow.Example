@@ -4,10 +4,10 @@ using EventFlowExample.Aggregates.Events;
 
 namespace EventFlowExample.Aggregates.Commands
 {
-    public class ResetCommand : Command<ExampleAggregate, WizloId, IExecutionResult>
+    public class ResetCommand : Command<ExampleAggregate, ExampleId, IExecutionResult>
     {
         public ResetCommand(
-            WizloId aggregateId)
+            ExampleId aggregateId)
             : base(aggregateId
             )
         {

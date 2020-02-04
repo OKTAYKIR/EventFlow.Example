@@ -11,7 +11,7 @@ using EventFlowExample.Models;
 namespace EventFlowExample.Aggregates.CommandHandlers
 {
     public class ExampleCommandHandler :
-        CommandHandler<ExampleAggregate, WizloId, CommandReturnResult, ExampleCommand>
+        CommandHandler<ExampleAggregate, ExampleId, CommandReturnResult, ExampleCommand>
     {
         private readonly IJobScheduler _jobScheduler;
 

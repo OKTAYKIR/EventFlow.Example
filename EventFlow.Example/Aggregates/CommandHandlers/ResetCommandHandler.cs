@@ -7,7 +7,7 @@ using EventFlowExample.Aggregates.Events;
 
 namespace EventFlowExample.Aggregates.CommandHandlers
 {
-    public class ResetCommandHandler : CommandHandler<ExampleAggregate, WizloId, IExecutionResult, ResetCommand>
+    public class ResetCommandHandler : CommandHandler<ExampleAggregate, ExampleId, IExecutionResult, ResetCommand>
     {
         public override Task<IExecutionResult> ExecuteCommandAsync(
             ExampleAggregate aggregate,

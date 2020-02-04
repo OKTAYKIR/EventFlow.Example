@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 namespace EventFlowExample.Aggregates.Sagas
 {
     public class ExampleSaga : AggregateSaga<ExampleSaga, ExampleSagaId, OrderSagaLocator>,
-                               ISagaIsStartedBy<ExampleAggregate, WizloId, ExampleEvent>,
-                               ISagaHandles<ExampleAggregate, WizloId, ResetEvent>,
+                               ISagaIsStartedBy<ExampleAggregate, ExampleId, ExampleEvent>,
+                               ISagaHandles<ExampleAggregate, ExampleId, ResetEvent>,
                                IEmit<ExampleSagaStartedEvent>
     {
          int MagicNumber { get; set; }
@@ -22,7 +22,7 @@ namespace EventFlowExample.Aggregates.Sagas
          }
        
          public Task HandleAsync(
-             IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent,
+             IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent,
              ISagaContext sagaContext,
              CancellationToken cancellationToken)
          {
@@ -38,7 +38,7 @@ namespace EventFlowExample.Aggregates.Sagas
          }
        
          public Task HandleAsync(
-            IDomainEvent<ExampleAggregate, WizloId, ResetEvent> domainEvent,
+            IDomainEvent<ExampleAggregate, ExampleId, ResetEvent> domainEvent,
             ISagaContext sagaContext,
             CancellationToken cancellationToken)
         {

@@ -8,13 +8,13 @@ namespace EventFlowExample.Aggregates.ReadModels
 {
     public class ExampleReadModel :
         IReadModel,
-        IAmReadModelFor<ExampleAggregate, WizloId, ExampleEvent>
+        IAmReadModelFor<ExampleAggregate, ExampleId, ExampleEvent>
     {
         public List<int> MagicNumber { get; private set; } = new List<int>();
 
         public void Apply(
             IReadModelContext context,
-            IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent)
+            IDomainEvent<ExampleAggregate, ExampleId, ExampleEvent> domainEvent)
         {
             MagicNumber.Add(domainEvent.AggregateEvent.MagicNumber);
         }

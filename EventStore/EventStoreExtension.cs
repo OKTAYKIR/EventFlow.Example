@@ -13,7 +13,6 @@ namespace EventFlow.EventStores
     {
         public static IEventFlowOptions ConfigureEventStore(this IEventFlowOptions options)
         {
-            //   string eventStoreUrl = Environment.GetEnvironmentVariable("EVENTSTOREURL");
             string eventStoreUrl = "tcp://localhost:1113";
             string connectionString = $"ConnectTo={eventStoreUrl}; HeartBeatTimeout=500";
             Uri eventStoreUri = GetUriFromConnectionString(connectionString);

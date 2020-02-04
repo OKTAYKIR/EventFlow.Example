@@ -27,15 +27,14 @@ namespace EventFlowExample
         #region Variables
         ICommandBus CommandBus { get; set; }
         private const string SNAPSHOT_CONTAINER_NAME = "snapshots";
-        //IRootResolver resolver { get; set; }
         #endregion
 
         public PublishCommand() 
         {
         }
 
-        private static WizloId GetStreamName(string tenantName, string eventName, Guid? aggregateId = null) =>
-            new WizloId($"{tenantName.ToLowerInvariant()}_{eventName.ToLowerInvariant()}-{(aggregateId.HasValue ? aggregateId.ToString() : Guid.NewGuid().ToString())}");
+        private static ExampleId GetStreamName(string tenantName, string eventName, Guid? aggregateId = null) =>
+            new ExampleId($"{tenantName.ToLowerInvariant()}_{eventName.ToLowerInvariant()}-{(aggregateId.HasValue ? aggregateId.ToString() : Guid.NewGuid().ToString())}");
 
         void DecorateCommandBus(IServiceRegistration sr)
         {
@@ -66,7 +65,7 @@ namespace EventFlowExample
                                                   //.UseNullLog()
                                                   //.UseInMemoryReadStoreFor<Aggregates.ReadModels.ExampleReadModel>()
                                                   .Configure(c => c.IsAsynchronousSubscribersEnabled = true)
-                                                  //.AddAsynchronousSubscriber<ExampleAggregate, Aggregates.Events.WizloId, ExampleEvent, RabbitMqConsumePersistanceService>()
+                                                  //.AddAsynchronousSubscriber<ExampleAggregate, Aggregates.Events.ExampleId, ExampleEvent, RabbitMqConsumePersistanceService>()
                                                   //.RegisterServices(s => {
                                                   //    s.Register<IHostedService, RabbitConsumePersistenceService>(Lifetime.Singleton);
                                                   //    s.Register<IHostedService, RabbitMqConsumePersistanceService>(Lifetime.Singleton);
@@ -82,12 +81,12 @@ namespace EventFlowExample
                 var clock = new Stopwatch();
                 clock.Start();
 
-                WizloId wizloId = GetStreamName("Protel", "EXAMPLE");
+                ExampleId exampleId = GetStreamName("Tenant", "EXAMPLE");
 
                 for (int i = 0; i < 1; i++)
                 {
 
-                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(wizloId, magicNumber), CancellationToken.None)
+                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(exampleId, magicNumber), CancellationToken.None)
                                                               .ConfigureAwait(false);
                     #region Comments
                     //result.IsSuccess.Should().BeTrue();
@@ -118,60 +117,5 @@ namespace EventFlowExample
 
             Console.ReadLine();
         }
-
-        //public class ReadModelRebuilder : IBootstrap
-        //{
-        //    private IReadModelPopulator _populator;
-
-        //    public ReadModelRebuilder(IReadModelPopulator populator)
-        //    {
-        //        _populator = populator;
-        //    }
-
-        //    public Task BootAsync(CancellationToken cancellationToken)
-        //    {
-
-        //        var typeList = typeof(ReadModelRebuilder).Assembly.DefinedTypes.Where(type => !type.IsInterface && !type.IsAbstract && type.ImplementedInterfaces.Any(inter => inter == typeof(IReadModel))).ToList();
-        //        typeList.ForEach(async x =>
-        //        {
-        //            await _populator.PurgeAsync(x, cancellationToken);
-        //            await _populator.PopulateAsync(x, cancellationToken);
-        //        });
-        //        return Task.CompletedTask;
-        //    }
-
-        //}
-
-        //public interface IRabbitMqConsumerPersistanceService
-        //{
-
-        //}
-
-        //public class RabbitMqConsumePersistanceService : IRabbitMqConsumerPersistanceService, ISubscribeAsynchronousTo<ExampleAggregate, WizloId, ExampleEvent>
-        //{
-
-        //    public Task StartAsync(CancellationToken cancellationToken)
-        //    {
-        //        return Task.CompletedTask;
-        //    }
-
-        //    public Task StopAsync(CancellationToken cancellationToken)
-        //    {
-        //        return Task.CompletedTask;
-        //    }
-
-        //    public Task HandleAsync(IDomainEvent<ExampleAggregate, WizloId, ExampleEvent> domainEvent, CancellationToken cancellationToken)
-        //    {
-        //        for (int i = 0; i < 1000; i++)
-        //        {
-        //            Thread.Sleep(10);
-        //            Console.WriteLine($"Example Updated for {domainEvent.AggregateIdentity} with MagicNumber => {domainEvent.AggregateEvent.MagicNumber}");
-        //        }
-
-        //        return Task.CompletedTask;
-        //    }
-
-        //}
-
     }
 }
