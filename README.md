@@ -55,4 +55,4 @@ var resolver = EventFlowOptions.New
 Please ⭐️ this repository if this project helped you!
 
 ## 📝 License
-Apache License
+Apache License 2.0
