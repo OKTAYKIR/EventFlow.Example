@@ -7,7 +7,7 @@ CQRS/Event-sourcing examples using EventFlow following CQRS-ES architecture. It 
 ## 📦 Stack
 * [EventFlow](https://github.com/eventflow/EventFlow)
 * [EventStore](https://eventstore.com)
-* [RabbiMQ](https://www.rabbitmq.com)
+* [RabbitMQ](https://www.rabbitmq.com)
 * [MongoDB](https://www.mongodb.com)
 * [PostgreSQL](https://www.postgresql.org)
 * [Docker](https://www.docker.com)
