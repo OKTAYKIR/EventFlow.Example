@@ -2,7 +2,7 @@
 ![Build Status](https://github.com/OKTAYKIR/EventFlow.Example/workflows/CI/badge.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
 
-CQRS/Event-sourcing examples using EventFlow following CQRS-ES architecture. It is configured with RabbitMQ, MongoDB(Snapshot store), PostgreSQL(Read store), EventStore(GES). It's targeted to .Net Core 2.2 and include [docker compose file](/build/docker-compose.yml).
+DDD+CQRS+Event-sourcing examples using EventFlow following CQRS-ES architecture. It is configured with RabbitMQ, MongoDB(Snapshot store), PostgreSQL(Read store), EventStore(GES). It's targeted to .Net Core 2.2 and include [docker compose file](/build/docker-compose.yml).
 
 ## Event Sourcing/CQRS Architecture
 The most common CQRS/ES architecture would look like following diagram
