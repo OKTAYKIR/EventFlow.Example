@@ -31,3 +31,20 @@ jobs:
         
       - name: sonar-scanner
         uses: Warchant/setup-sonar-scanner@v1
+   
+      - name: Build the stack
+        run: docker-compose -f builds/docker-compose.yml up -d
+   
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '5s'
+
+      - name: Check running containers
+        run: docker ps -a
+
+      - name: Check logs
+        run: docker-compose -f builds/docker-compose.yml logs
+
+      - name: Tests
+        run: dotnet test EventFlow.Tests/EventFlow.Tests.csproj --configuration Release
