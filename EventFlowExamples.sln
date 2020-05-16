@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.852
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventFlow.Example", "EventFlow.Example\EventFlow.Example.csproj", "{F67006E8-2887-4B2C-8049-63BDC8AE0F00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventStore", "EventStore\EventStore.csproj", "{DF87F930-BF1C-4932-9C51-75591E14FEAE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventFlow.Tests", "EventFlow.Tests\EventFlow.Tests.csproj", "{2B5AB9C1-0C47-4475-A3F9-3A72C34E15F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{DF87F930-BF1C-4932-9C51-75591E14FEAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF87F930-BF1C-4932-9C51-75591E14FEAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF87F930-BF1C-4932-9C51-75591E14FEAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5AB9C1-0C47-4475-A3F9-3A72C34E15F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5AB9C1-0C47-4475-A3F9-3A72C34E15F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5AB9C1-0C47-4475-A3F9-3A72C34E15F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5AB9C1-0C47-4475-A3F9-3A72C34E15F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
