@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EventFlowExample
 {
-    class LogCommandBus : ICommandBus
+    public class LogCommandBus : ICommandBus
     {
         private readonly ICommandBus _internalCommandBus;
 

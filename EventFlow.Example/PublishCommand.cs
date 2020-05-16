@@ -33,7 +33,7 @@ namespace EventFlowExample
         {
         }
 
-        private static ExampleId GetStreamName(string tenantName, string eventName, Guid? aggregateId = null) =>
+        public static ExampleId GetStreamName(string tenantName, string eventName, Guid? aggregateId = null) =>
             new ExampleId($"{tenantName.ToLowerInvariant()}_{eventName.ToLowerInvariant()}-{(aggregateId.HasValue ? aggregateId.ToString() : Guid.NewGuid().ToString())}");
 
         void DecorateCommandBus(IServiceRegistration sr)
@@ -86,8 +86,9 @@ namespace EventFlowExample
                 for (int i = 0; i < 1; i++)
                 {
 
-                    IExecutionResult result = await CommandBus.PublishAsync(new ExampleCommand(exampleId, magicNumber), CancellationToken.None)
-                                                              .ConfigureAwait(false);
+                    IExecutionResult result = await CommandBus.PublishAsync(
+                        new ExampleCommand(exampleId, magicNumber), CancellationToken.None)
+                        .ConfigureAwait(false);
                     #region Comments
                     //result.IsSuccess.Should().BeTrue();
 
