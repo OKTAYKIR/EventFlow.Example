@@ -8,7 +8,7 @@ DDD+CQRS+Event-sourcing examples using EventFlow following CQRS-ES architecture.
 The most common CQRS/ES architecture would look like following diagram
 ![OverallArchitecture](https://github.com/OKTAYKIR/EventFlow.Example/blob/master/Images/architecture_diagram.png)
 
-The example consists of the following classes, each shown below
+The example consists of the following concepts, each shown below
 
 - Aggregates
 - Command bus and commands
