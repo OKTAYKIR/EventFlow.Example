@@ -1,4 +1,6 @@
 # EventFlow.Example
+![Hits](https://hitcounter.pythonanywhere.com/count/tag.svg?url=https://github.com/OKTAYKIR/EventFlow.Example)
+![GitHub issues](https://img.shields.io/github/issues/OKTAYKIR/EventFlow.Example)
 ![Build Status](https://github.com/OKTAYKIR/EventFlow.Example/workflows/CI/badge.svg)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](#contributing)
 
